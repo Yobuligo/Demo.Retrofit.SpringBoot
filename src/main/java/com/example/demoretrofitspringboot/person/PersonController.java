@@ -12,20 +12,25 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class PersonController {
 	@Autowired
-	private IPersonRepository personRepository;
+	private IPersonService personService;
 
 	@GetMapping("/persons")
 	public Iterable<Person> findAll() {
-		return personRepository.findAll();
+		return personService.findAll();
 	}
 
 	@GetMapping("/persons/{id}")
 	public Person findById(@PathVariable("id") long id) {
-		return personRepository.findById(id).orElse(new Person());
+		return personService.findById(id);
 	}
 
 	@PostMapping("/persons")
 	public Person addPerson(@RequestBody Person person) {
-		return personRepository.save(person);
+		return personService.addPerson(person);
+	}
+
+	@GetMapping("/persons/{id}/teams")
+	public PersonTeamDTO findTeamsByPersonId(@PathVariable("id") Long id) {
+		return personService.findTeamsByPersonId(id);
 	}
 }
