@@ -9,4 +9,6 @@ public interface IPersonService {
 	Person addPerson(Person person);
 
 	PersonTeamDTO findTeamsByPersonId(Long id);
+
+	Person addTeamToPersonById(Long personId, Long teamId);
 }

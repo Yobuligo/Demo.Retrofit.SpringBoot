@@ -3,7 +3,9 @@ package com.example.demoretrofitspringboot.person;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,7 +22,7 @@ public class Person {
 	private String firstname;
 	private String lastname;
 
-	@OneToMany
+	@OneToMany(fetch = FetchType.LAZY)	
 	private List<Team> teams = new ArrayList<Team>();
 
 	public Long getId() {
@@ -53,6 +55,10 @@ public class Person {
 
 	public void setTeams(List<Team> teams) {
 		this.teams = teams;
+	}
+
+	public void addTeam(Team team) {
+		this.teams.add(team);
 	}
 
 }

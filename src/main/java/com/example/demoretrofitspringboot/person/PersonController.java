@@ -33,4 +33,9 @@ public class PersonController {
 	public PersonTeamDTO findTeamsByPersonId(@PathVariable("id") Long id) {
 		return personService.findTeamsByPersonId(id);
 	}
+
+	@PostMapping("/persons/{person_id}/teams/{team_id}")
+	public void addTeamToPersonById(@PathVariable("person_id") Long personId, @PathVariable("team_id") Long teamId) {
+		personService.addTeamToPersonById(personId, teamId);
+	}
 }
