@@ -1,4 +1,4 @@
-package com.example.demoretrofitspringboot.team;
+package com.example.demoretrofitspringboot.Config;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;

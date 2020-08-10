@@ -2,7 +2,7 @@ package com.example.demoretrofitspringboot.person;
 
 public interface IPersonService {
 
-	Iterable<Person> findAll();
+	Iterable<Person> findAll(String sort, int offset, int limit);
 
 	Person findById(Long id);
 

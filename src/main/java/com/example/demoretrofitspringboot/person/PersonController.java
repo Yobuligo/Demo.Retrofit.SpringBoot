@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -15,8 +16,22 @@ public class PersonController {
 	private IPersonService personService;
 
 	@GetMapping("/persons")
-	public Iterable<Person> findAll() {
-		return personService.findAll();
+	public Iterable<Person> findAll(@RequestParam(name = "sort", required = false) String sort,
+			@RequestParam(name = "offset", required = false) String offset,
+			@RequestParam(name = "limit", required = false) String limit) {
+
+		int internalOffset = 0;
+		int internalLimit = 0;
+
+		if (offset != null) {
+			internalOffset = Integer.parseInt(offset);
+		}
+
+		if (limit != null) {
+			internalLimit = Integer.parseInt(limit);
+		}
+
+		return personService.findAll(sort, internalOffset, internalLimit);
 	}
 
 	@GetMapping("/persons/{id}")
