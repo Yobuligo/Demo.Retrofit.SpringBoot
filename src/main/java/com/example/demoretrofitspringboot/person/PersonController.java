@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demoretrofitspringboot.requestParameter.IRequestParameter;
+import com.example.demoretrofitspringboot.requestParameter.RequestParameterBuilder;
+
 @RestController
 @RequestMapping("/api")
 public class PersonController {
@@ -16,22 +19,20 @@ public class PersonController {
 	private IPersonService personService;
 
 	@GetMapping("/persons")
-	public Iterable<Person> findAll(@RequestParam(name = "sort", required = false) String sort,
-			@RequestParam(name = "offset", required = false) String offset,
-			@RequestParam(name = "limit", required = false) String limit) {
+	public Iterable<Person> findAll(
+			@RequestParam(name = "sort", required = false) String sort,
+			@RequestParam(name = "order", required = false) String order,
+			@RequestParam(name = "offset", required = false) Integer pageNumber,
+			@RequestParam(name = "limit", required = false) Integer pageSize) {
 
-		int internalOffset = 0;
-		int internalLimit = 0;
+		IRequestParameter requestParameter = new RequestParameterBuilder()
+				.setSortTerm(sort)
+				.setSortOrder(order)
+				.setPageNumber(pageNumber)
+				.setPageSize(pageSize)
+				.build();
 
-		if (offset != null) {
-			internalOffset = Integer.parseInt(offset);
-		}
-
-		if (limit != null) {
-			internalLimit = Integer.parseInt(limit);
-		}
-
-		return personService.findAll(sort, internalOffset, internalLimit);
+		return personService.findAll(requestParameter);
 	}
 
 	@GetMapping("/persons/{id}")
