@@ -22,16 +22,16 @@ public class TeamController {
 	public Iterable<Team> findAll(
 			@RequestParam(name = "sort", required = false) String sort,
 			@RequestParam(name = "order", required = false) String order,
-			@RequestParam(name = "offset", required = false) Integer pageNumber,
-			@RequestParam(name = "limit", required = false) Integer pageSize) {
-		
+			@RequestParam(name = "pageNumber", required = false) Integer pageNumber,
+			@RequestParam(name = "pageSize", required = false) Integer pageSize) {
+
 		IRequestParameter requestParameter = new RequestParameterBuilder()
 				.setSortTerm(sort)
 				.setSortOrder(order)
 				.setPageNumber(pageNumber)
 				.setPageSize(pageSize)
-				.build();		
-		
+				.build();
+
 		return teamService.findAll(requestParameter);
 	}
 

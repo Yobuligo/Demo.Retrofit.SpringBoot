@@ -1,6 +1,7 @@
 package com.example.demoretrofitspringboot.person;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,24 +14,21 @@ import com.example.demoretrofitspringboot.requestParameter.IRequestParameter;
 import com.example.demoretrofitspringboot.requestParameter.RequestParameterBuilder;
 
 @RestController
+@PreAuthorize("isAuthenticated()")
 @RequestMapping("/api")
 public class PersonController {
 	@Autowired
 	private IPersonService personService;
 
+	@PreAuthorize("permitAll()")
 	@GetMapping("/persons")
-	public Iterable<Person> findAll(
-			@RequestParam(name = "sort", required = false) String sort,
+	public Iterable<Person> findAll(@RequestParam(name = "sort", required = false) String sort,
 			@RequestParam(name = "order", required = false) String order,
-			@RequestParam(name = "offset", required = false) Integer pageNumber,
-			@RequestParam(name = "limit", required = false) Integer pageSize) {
+			@RequestParam(name = "pageNumber", required = false) Integer pageNumber,
+			@RequestParam(name = "pageSize", required = false) Integer pageSize) {
 
-		IRequestParameter requestParameter = new RequestParameterBuilder()
-				.setSortTerm(sort)
-				.setSortOrder(order)
-				.setPageNumber(pageNumber)
-				.setPageSize(pageSize)
-				.build();
+		IRequestParameter requestParameter = new RequestParameterBuilder().setSortTerm(sort).setSortOrder(order)
+				.setPageNumber(pageNumber).setPageSize(pageSize).build();
 
 		return personService.findAll(requestParameter);
 	}
@@ -50,6 +48,9 @@ public class PersonController {
 		return personService.findTeamsByPersonId(id);
 	}
 
+	// @PreAuthorize("hasRole('ADMIN')")
+	// @PreAuthorize("isAuthenticated()")
+	@PreAuthorize("permitAll()")
 	@PostMapping("/persons/{person_id}/teams/{team_id}")
 	public void addTeamToPersonById(@PathVariable("person_id") Long personId, @PathVariable("team_id") Long teamId) {
 		personService.addTeamToPersonById(personId, teamId);
